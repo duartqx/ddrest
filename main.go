@@ -15,10 +15,18 @@ func main() {
 		tmpl.Execute(w, nil)
 	})
 
+	http.Handle(
+		"/static/",
+		http.StripPrefix(
+			"/static/",
+			http.FileServer(
+				http.Dir("./views/static"),
+			),
+		),
+	)
+
 	http.HandleFunc("/form", func(w http.ResponseWriter, r *http.Request) {
 		var estate models.Estate
-
-		log.Println(r.Body)
 
 		err := json.NewDecoder(r.Body).Decode(&estate)
 		if err != nil {
