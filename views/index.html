@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script
+      src="https://unpkg.com/htmx.org@1.9.6"
+      integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+  </head>
+  <body hx-ext="json-enc">
+    <form hx-post="/form" hx-target="#result" hx-swap="innerHTML">
+      <label>
+        <span>Estate Name</span>
+        <input
+          id="estate_name"
+          type="text"
+          name="estate_name"
+          placeholder="The name of the estate"
+        />
+      </label>
+      <label>
+        <span>Address Number</span>
+        <input
+          id="estate_address_number"
+          type="text"
+          name="estate_address_number"
+          placeholder="322"
+        />
+      </label>
+      <label>
+        <span>Number of Floors</span>
+        <input
+          id="estate_floors"
+          type="number"
+          name="estate_floors"
+          placeholder="0"
+        />
+      </label>
+      <label>
+        <span>Number of Balconies</span>
+        <input
+          id="estate_balconies"
+          type="number"
+          name="estate_balconies"
+          placeholder="0"
+        />
+      </label>
+      <label>
+        <span>Number of Bedrooms</span>
+        <input
+          id="estate_bedrooms"
+          type="number"
+          name="estate_bedrooms"
+          placeholder="1"
+        />
+      </label>
+      <label>
+        <span>Number of Bathrooms</span>
+        <input
+          id="estate_bathrooms"
+          type="number"
+          name="estate_bathrooms"
+          placeholder="1"
+        />
+      </label>
+      <label>
+        <span>Are Pets allowed?</span>
+        <select id="estate_pets_allowed" name="estate_pets_allowed">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+      </label>
+      <label>
+        <span>Number of parking Spots</span>
+        <input id="estate_parking" type="number" name="estate_parking" />
+      </label>
+      <label>
+        <span>Estate Description</span>
+        <input id="estate_description" type="text" name="estate_description" />
+      </label>
+
+      <button>Confirm</button>
+    </form>
+
+    <div id="result"></div>
+  </body>
+</html>
