@@ -9,12 +9,14 @@ htmx.defineExtension("typed-json-enc", {
     let parsedValues = new Object();
     xhr.overrideMimeType("text/json");
     for (const [typedKey, value] of Object.entries(parameters)) {
+      if (!typedKey.includes("::")) {
+        parsedValues[typedKey] = value;
+        continue;
+      }
+
       let [type, key] = typedKey.split("::");
 
       switch (type) {
-        case "String":
-          parsedValues[key] = value;
-          break;
         case "Int":
           parsedValues[key] = parseInt(value);
           break;
@@ -22,7 +24,8 @@ htmx.defineExtension("typed-json-enc", {
           parsedValues[key] = parseFloat(value);
           break;
         case "Bool":
-          parsedValues[key] = value.toLowerCase() === "true";
+          parsedValues[key] =
+            value.toLowerCase() === "true" || value.toLowerCase() === "1";
           break;
         default:
           parsedValues[key] = value;

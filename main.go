@@ -20,7 +20,7 @@ func main() {
 		http.StripPrefix(
 			"/static/",
 			http.FileServer(
-				http.Dir("./views/static"),
+				http.Dir("./public"),
 			),
 		),
 	)
