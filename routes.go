@@ -5,12 +5,14 @@ import (
 	"net/http"
 )
 
-func DefineRoutes() {
+func GetMux() *http.ServeMux {
 
-	http.HandleFunc("/", controllers.IndexController{}.Dispatch)
-	http.HandleFunc("/form", controllers.FormController{}.Dispatch)
+	mux := http.NewServeMux()
 
-	http.Handle(
+	mux.HandleFunc("/", controllers.IndexController{}.Dispatch)
+	mux.HandleFunc("/filterEstate", controllers.FilterEstateController{}.Dispatch)
+
+	mux.Handle(
 		"/static/",
 		http.StripPrefix(
 			"/static/",
@@ -19,4 +21,6 @@ func DefineRoutes() {
 			),
 		),
 	)
+
+	return mux
 }

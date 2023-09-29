@@ -7,22 +7,22 @@ import (
 
 type IndexController struct{}
 
-func (c IndexController) Dispatch(w http.ResponseWriter, r *http.Request) {
+func (i IndexController) Dispatch(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		c.Get(w, r)
+		i.Get(w, r)
 	case "POST":
-		c.Post(w, r)
+		i.Post(w, r)
 	default:
 		raiseMethodNotAllowed(w, r)
 	}
 }
 
-func (c *IndexController) Get(w http.ResponseWriter, r *http.Request) {
+func (i IndexController) Get(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("views/index.html"))
 	tmpl.Execute(w, nil)
 }
 
-func (c *IndexController) Post(w http.ResponseWriter, r *http.Request) {
+func (i IndexController) Post(w http.ResponseWriter, r *http.Request) {
 	raiseMethodNotAllowed(w, r)
 }
