@@ -3,8 +3,8 @@ package filters
 import (
 	"ddrest/models"
 	"encoding/json"
+	"fmt"
 	"io"
-	"strings"
 )
 
 type FilterRealEstateForm struct {
@@ -21,28 +21,67 @@ func (f *FilterRealEstateForm) AddBody(body io.ReadCloser) error {
 	return json.NewDecoder(body).Decode(&f)
 }
 
-func (f FilterRealEstateForm) Filter(estates *[]models.RealEstate) (results *[]models.RealEstate) {
-	results = &[]models.RealEstate{}
+func (f FilterRealEstateForm) Filter() (results *[]models.RealEstate) {
+	query := &models.Query{Values: []any{}}
 
-	for _, e := range *estates {
-		switch {
-		case f.Name != "" && !strings.Contains(e.Name, f.Name):
-			continue
-		case f.Floors > e.Floors:
-			continue
-		case f.Balconies > e.Balconies:
-			continue
-		case f.Bedrooms > e.Bedrooms:
-			continue
-		case f.Parking > e.Parking:
-			continue
-		case f.Bathrooms > e.Bathrooms:
-			continue
-		case f.PetsAllowed != 0 && f.PetsAllowed != e.PetsAllowed:
-			continue
-		default:
-			*results = append(*results, e)
-		}
+	if f.Name != "" {
+		query.Str += " Name LIKE ?"
+		query.Values = append(query.Values, fmt.Sprintf("%%%s%%", f.Name))
 	}
+	if f.Floors > 0 {
+		if query.Str != "" {
+			query.Str += " AND Floors >= ?"
+		} else {
+			query.Str += " Floors >= ?"
+		}
+		query.Values = append(query.Values, f.Floors)
+	}
+	if f.Balconies > 0 {
+		if query.Str != "" {
+			query.Str += " AND Balconies >= ?"
+		} else {
+			query.Str += " Balconies >= ?"
+		}
+		query.Values = append(query.Values, f.Balconies)
+	}
+	if f.Bedrooms > 0 {
+		if query.Str != "" {
+			query.Str += " AND Bedrooms >= ?"
+		} else {
+			query.Str += " Bedrooms >= ?"
+		}
+		query.Values = append(query.Values, f.Bedrooms)
+	}
+	if f.Parking > 0 {
+		if query.Str != "" {
+			query.Str += " AND Parking >= ?"
+		} else {
+			query.Str += " Parking >= ?"
+		}
+		query.Values = append(query.Values, f.Parking)
+	}
+	if f.Bathrooms > 0 {
+		if query.Str != "" {
+			query.Str += " AND Bathrooms >= ?"
+		} else {
+			query.Str += " Bathrooms >= ?"
+		}
+		query.Values = append(query.Values, f.Bathrooms)
+	}
+	if f.PetsAllowed != 2 {
+		if query.Str != "" {
+			query.Str += " AND PetsAllowed = ?"
+		} else {
+			query.Str += " PetsAllowed = ?"
+		}
+		query.Values = append(query.Values, f.PetsAllowed)
+	}
+
+	if query.Str != "" {
+		results = models.RealEstate{}.Filter(query)
+	} else {
+		results = models.RealEstate{}.All()
+	}
+
 	return results
 }

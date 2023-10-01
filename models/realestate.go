@@ -48,9 +48,9 @@ func (re RealEstate) EstateStatusChoices() *map[int]string {
 
 func (re RealEstate) PetsAllowedChoices() *map[int]string {
 	return &map[int]string{
-		0: "Null",
+		0: "No",
 		1: "Yes",
-		2: "No",
+		2: "Null",
 	}
 }
 
@@ -91,7 +91,7 @@ func (re RealEstate) buildResults(rows *sql.Rows) *[]RealEstate {
 
 func (re RealEstate) All() *[]RealEstate {
 
-	rows, err := repo.db.Query(fmt.Sprintf("%s;", reMeta.baseSelect))
+	rows, err := repo.db.Query(fmt.Sprintf("%s;", reMeta.baseSelect()))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -100,19 +100,25 @@ func (re RealEstate) All() *[]RealEstate {
 	return re.buildResults(rows)
 }
 
-// func (re RealEstate) Filter(filter *interface{}) *[]RealEstate {
-//
-// 	return re.query(fmt.Sprintf("%s %s;", reMeta.baseSelect, query))
-// }
+func (re RealEstate) Filter(query *Query) *[]RealEstate {
 
-type realEstateMeta struct {
-	tableName  string
-	baseSelect string
+	select_str := fmt.Sprintf("%s WHERE %s;", reMeta.baseSelect(), query.Str)
+
+	rows, err := repo.db.Query(select_str, query.Values...)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	return re.buildResults(rows)
 }
 
-var reMeta realEstateMeta = realEstateMeta{
-	tableName: "RealEstate",
-	baseSelect: fmt.Sprintf(`
+type realEstateMeta struct {
+	tableName string
+}
+
+func (m realEstateMeta) baseSelect() string {
+	return fmt.Sprintf(`
 		SELECT 
 			Id,
 			Name,
@@ -128,5 +134,9 @@ var reMeta realEstateMeta = realEstateMeta{
 			PetsAllowed,
 			Description
 		FROM %s
-	`, "RealEstate"),
+	`, m.tableName)
+}
+
+var reMeta realEstateMeta = realEstateMeta{
+	tableName: "RealEstate",
 }

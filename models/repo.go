@@ -16,3 +16,8 @@ type Model interface {
 	Filter(params map[string]any) *sql.Rows
 	GetById(id int) *sql.Rows
 }
+
+type Query struct {
+	Str    string
+	Values []any
+}
