@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ddrest/filters"
+	"ddrest/repository"
 	"ddrest/utils"
 	"html/template"
 	"log"
@@ -23,16 +23,16 @@ func (f FilterRealEstateController) Dispatch(w http.ResponseWriter, r *http.Requ
 
 func (f FilterRealEstateController) Post(w http.ResponseWriter, r *http.Request) {
 
-	var filter filters.FilterRealEstateForm
+	var re repository.RealEstateRepository
 
-	if err := filter.AddBody(r.Body); err != nil {
+	if err := re.Populate(r.Body); err != nil {
 		log.Println(r.URL, r.Method, err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	tmpl := template.Must(template.ParseFiles("views/estates-table.html"))
-	tmpl.Execute(w, filter.Filter())
+	tmpl.Execute(w, re.Filter())
 }
 
 func (f FilterRealEstateController) Get(w http.ResponseWriter, r *http.Request) {

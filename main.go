@@ -2,16 +2,15 @@ package main
 
 import (
 	"database/sql"
-	"ddrest/models"
+	"ddrest/repository"
 	"log"
 	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var DB *sql.DB
-
 func main() {
+	var DB *sql.DB
 
 	log.Println("Starting")
 	DB, err := sql.Open("sqlite3", "db.sqlite")
@@ -22,7 +21,7 @@ func main() {
 	defer DB.Close()
 
 	log.Println("Init Repo")
-	models.InitRepository(DB)
+	repository.InitRepository(DB)
 
 	log.Println("Listening and serving on http://127.0.0.1:8000")
 	log.Fatal(http.ListenAndServe(":8000", GetMux()))

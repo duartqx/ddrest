@@ -1,4 +1,4 @@
-package models
+package repository
 
 import "database/sql"
 
@@ -10,11 +10,6 @@ var repo Repository
 
 func InitRepository(db *sql.DB) {
 	repo.db = db
-}
-
-type Model interface {
-	Filter(params map[string]any) *sql.Rows
-	GetById(id int) *sql.Rows
 }
 
 type Query struct {
