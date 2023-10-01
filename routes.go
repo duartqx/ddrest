@@ -10,7 +10,7 @@ func GetMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", controllers.IndexController{}.Dispatch)
-	mux.HandleFunc("/filterEstate", controllers.FilterEstateController{}.Dispatch)
+	mux.HandleFunc("/filterEstate", controllers.FilterRealEstateController{}.Dispatch)
 
 	mux.Handle(
 		"/static/",
