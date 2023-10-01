@@ -11,6 +11,7 @@ func GetMux() *http.ServeMux {
 
 	mux.HandleFunc("/", controllers.IndexController{}.Dispatch)
 	mux.HandleFunc("/filterEstate", controllers.FilterRealEstateController{}.Dispatch)
+	mux.HandleFunc("/realEstate", controllers.RealEstateController{}.Dispatch)
 
 	mux.Handle(
 		"/static/",

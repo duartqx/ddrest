@@ -156,6 +156,59 @@ func (re RealEstate) All() *[]RealEstate {
 	return re.buildResults(rows)
 }
 
+func (re RealEstate) Create(realEstates *[]RealEstate) int {
+	query := &Query{
+		Str: `
+			INSERT INTO RealEstate (
+				Name,
+				AddressNumber,
+				AtFloor,
+				Floors,
+				Balconies,
+				Bedrooms,
+				Bathrooms,
+				Parking,
+				PetsAllowed,
+				EstateType,
+				EstateStatus,
+				Description
+			)
+		VALUES
+		`,
+		Values: []any{},
+	}
+	for _, e := range *realEstates {
+		query.Str += fmt.Sprintf(
+			" ('%v', '%v', %v, %v, %v, %v, %v, %v, %v, %v, %v, '%v'),",
+			e.Name,
+			e.AddressNumber,
+			e.AtFloor,
+			e.Floors,
+			e.Balconies,
+			e.Bedrooms,
+			e.Bathrooms,
+			e.Parking,
+			e.PetsAllowed,
+			e.EstateType,
+			e.EstateStatus,
+			e.Description,
+		)
+	}
+
+	query.Str = fmt.Sprintf("%s;", query.Str[:len(query.Str)-1])
+
+	res, err := repo.db.Exec(query.Str)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return int(rows)
+}
+
 func (re *RealEstate) Populate(body io.ReadCloser) error {
 	return json.NewDecoder(body).Decode(&re)
 }

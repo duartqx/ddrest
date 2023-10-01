@@ -23,6 +23,6 @@ func main() {
 	log.Println("Init Repo")
 	models.InitRepository(DB)
 
-	log.Println("Listening and serving on http://127.0.0.1:8000")
+	log.Println("Listening and serving @ http://127.0.0.1:8000")
 	log.Fatal(http.ListenAndServe(":8000", GetMux()))
 }
