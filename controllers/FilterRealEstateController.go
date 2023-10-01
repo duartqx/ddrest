@@ -1,8 +1,8 @@
 package controllers
 
 import (
+	"ddrest/controllers/utils"
 	"ddrest/models"
-	"ddrest/utils"
 	"html/template"
 	"log"
 	"net/http"

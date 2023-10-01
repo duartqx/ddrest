@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ddrest/utils"
+	"ddrest/controllers/utils"
 	"html/template"
 	"net/http"
 )
