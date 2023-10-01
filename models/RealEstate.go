@@ -1,5 +1,15 @@
 package models
 
+import (
+	"database/sql"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+)
+
+const realEstateTable string = "RealEstate"
+
 type RealEstate struct {
 	Id            int    `json:"id"`
 	Name          string `json:"estate_name"`
@@ -47,4 +57,105 @@ func (re RealEstate) PetsAllowedChoices() *map[int]string {
 		1: "Yes",
 		2: "",
 	}
+}
+
+func (re RealEstate) buildResults(rows *sql.Rows) *[]RealEstate {
+	var results []RealEstate
+
+	for rows.Next() {
+		if err := rows.Scan(
+			&re.Id,
+			&re.Name,
+			&re.EstateType,
+			&re.EstateStatus,
+			&re.AddressNumber,
+			&re.AtFloor,
+			&re.Floors,
+			&re.Balconies,
+			&re.Bedrooms,
+			&re.Bathrooms,
+			&re.Parking,
+			&re.PetsAllowed,
+			&re.Description,
+		); err != nil {
+			log.Fatal(err)
+		}
+		results = append(results, re)
+	}
+
+	err := rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return &results
+}
+
+func (re RealEstate) Filter() *[]RealEstate {
+	q := &Query{Values: []any{}}
+
+	if re.Name != "" {
+		q.Add(" Name LIKE ?", "%"+re.Name+"%")
+	}
+	if re.EstateType > 0 {
+		q.Add(" EstateType = ?", re.EstateType)
+	}
+	if re.EstateStatus > 0 {
+		q.Add(" EstateStatus = ?", re.EstateStatus)
+	}
+	if re.AddressNumber != "" {
+		q.Add(" AddressNumber LIKE ?", "%"+re.AddressNumber+"%")
+	}
+	if re.AtFloor > 0 {
+		q.Add(" AtFloor = ?", re.AtFloor)
+	}
+	if re.Floors > 0 {
+		q.Add(" Floors >= ?", re.Floors)
+	}
+	if re.Balconies > 0 {
+		q.Add(" Balconies >= ?", re.Balconies)
+	}
+	if re.Bedrooms > 0 {
+		q.Add(" Bedrooms >= ?", re.Bedrooms)
+	}
+	if re.Parking > 0 {
+		q.Add(" Parking >= ?", re.Parking)
+	}
+	if re.Bathrooms > 0 {
+		q.Add(" Bathrooms >= ?", re.Bathrooms)
+	}
+	if re.Parking > 0 {
+		q.Add(" Parking >= ?", re.Parking)
+	}
+	if re.PetsAllowed != 2 {
+		q.Add(" PetsAllowed = ?", re.PetsAllowed)
+	}
+
+	if q.Str == "" {
+		return re.All()
+	}
+
+	select_str := fmt.Sprintf("SELECT * FROM %s WHERE %s;", realEstateTable, q.Str)
+	rows, err := repo.db.Query(select_str, q.Values...)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	return re.buildResults(rows)
+}
+
+func (re RealEstate) All() *[]RealEstate {
+
+	rows, err := repo.db.Query(fmt.Sprintf("SELECT * FROM %s;", realEstateTable))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	return re.buildResults(rows)
+}
+
+func (re *RealEstate) Populate(body io.ReadCloser) error {
+	return json.NewDecoder(body).Decode(&re)
 }

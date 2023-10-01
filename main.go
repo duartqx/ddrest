@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"ddrest/repository"
+	"ddrest/models"
 	"log"
 	"net/http"
 
@@ -21,7 +21,7 @@ func main() {
 	defer DB.Close()
 
 	log.Println("Init Repo")
-	repository.InitRepository(DB)
+	models.InitRepository(DB)
 
 	log.Println("Listening and serving on http://127.0.0.1:8000")
 	log.Fatal(http.ListenAndServe(":8000", GetMux()))

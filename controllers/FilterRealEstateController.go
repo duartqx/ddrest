@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ddrest/repository"
+	"ddrest/models"
 	"ddrest/utils"
 	"html/template"
 	"log"
@@ -23,7 +23,7 @@ func (f FilterRealEstateController) Dispatch(w http.ResponseWriter, r *http.Requ
 
 func (f FilterRealEstateController) Post(w http.ResponseWriter, r *http.Request) {
 
-	var re repository.RealEstateRepository
+	var re models.RealEstate
 
 	if err := re.Populate(r.Body); err != nil {
 		log.Println(r.URL, r.Method, err)
