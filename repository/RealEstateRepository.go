@@ -16,10 +16,6 @@ type RealEstateRepository struct {
 	tmp models.RealEstate
 }
 
-func (re RealEstateRepository) baseSelect() string {
-	return fmt.Sprintf("SELECT * FROM %s", realEstateTable)
-}
-
 func (re RealEstateRepository) buildResults(rows *sql.Rows) *[]models.RealEstate {
 	var (
 		results []models.RealEstate
