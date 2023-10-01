@@ -9,7 +9,9 @@ htmx.defineExtension("typed-json-enc", {
     let parsedValues = new Object();
     xhr.overrideMimeType("text/json");
     for (const [typedKey, value] of Object.entries(parameters)) {
-      if (!typedKey.includes("::")) {
+      if (!value) {
+        continue;
+      } else if (!typedKey.includes("::")) {
         parsedValues[typedKey] = value;
         continue;
       }
