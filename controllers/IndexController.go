@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"ddrest/utils"
 	"html/template"
 	"net/http"
 )
@@ -14,7 +15,7 @@ func (i IndexController) Dispatch(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		i.Post(w, r)
 	default:
-		raiseMethodNotAllowed(w, r)
+		utils.RaiseMethodNotAllowed(w, r)
 	}
 }
 
@@ -24,5 +25,5 @@ func (i IndexController) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (i IndexController) Post(w http.ResponseWriter, r *http.Request) {
-	raiseMethodNotAllowed(w, r)
+	utils.RaiseMethodNotAllowed(w, r)
 }

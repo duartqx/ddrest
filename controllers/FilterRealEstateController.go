@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"ddrest/filters"
+	"ddrest/utils"
 	"html/template"
 	"log"
 	"net/http"
@@ -16,7 +17,7 @@ func (f FilterRealEstateController) Dispatch(w http.ResponseWriter, r *http.Requ
 	case "POST":
 		f.Post(w, r)
 	default:
-		raiseMethodNotAllowed(w, r)
+		utils.RaiseMethodNotAllowed(w, r)
 	}
 }
 
@@ -35,5 +36,5 @@ func (f FilterRealEstateController) Post(w http.ResponseWriter, r *http.Request)
 }
 
 func (f FilterRealEstateController) Get(w http.ResponseWriter, r *http.Request) {
-	raiseMethodNotAllowed(w, r)
+	utils.RaiseMethodNotAllowed(w, r)
 }

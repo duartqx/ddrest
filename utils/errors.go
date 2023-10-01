@@ -1,4 +1,4 @@
-package controllers
+package utils
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func raiseMethodNotAllowed(w http.ResponseWriter, r *http.Request) {
+func RaiseMethodNotAllowed(w http.ResponseWriter, r *http.Request) {
 	err := errors.New(fmt.Sprintf("%s %s Not Allowed", r.URL, r.Method)).Error()
 	log.Println(err)
 	http.Error(w, err, http.StatusMethodNotAllowed)
