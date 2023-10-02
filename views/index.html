@@ -10,15 +10,22 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
-    <script src="/static/js/typed-json-enc.js">
-    </script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="/static/js/typed-json-enc.js"></script>
+    <script src="/static/js/local-storage.js"></script>
   </head>
   <body>
     <form
+      id="realEstateFilterForm"
       hx-post="/filterEstate"
       hx-target="#result"
       hx-swap="innerHTML"
       hx-ext="typed-json-enc"
+      hx-on::before-request="storeOnLocalStorage('realEstateFilterFormCache', htmx.values(this));"
+      x-init="loadFromLocalStorage('realEstateFilterFormCache');"
     >
       <label>
         <span>Estate Name</span>
@@ -79,12 +86,21 @@
       </label>
       <label>
         <span>Estate Description</span>
-        <input id="estate_description" type="text" name="String::estate_description" />
+        <input
+          id="estate_description"
+          type="text"
+          name="String::estate_description"
+        />
       </label>
 
       <button>Confirm</button>
+      <button type="button" x-data @click="resetRealEstateForm();">Reset</button>
     </form>
 
-    <div id="result"></div>
+    <div
+      id="result"
+      x-data
+      x-init="$nextTick(lazyLoadRealEstate());"
+    ></div>
   </body>
 </html>
