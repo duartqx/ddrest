@@ -177,9 +177,11 @@ func (re RealEstate) Create(realEstates *[]RealEstate) int {
 		`,
 		Values: []any{},
 	}
+
 	for _, e := range *realEstates {
-		query.Str += fmt.Sprintf(
-			" ('%v', '%v', %v, %v, %v, %v, %v, %v, %v, %v, %v, '%v'),",
+		query.Str += " (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?),"
+		query.Values = append(
+			query.Values,
 			e.Name,
 			e.AddressNumber,
 			e.AtFloor,
@@ -197,7 +199,7 @@ func (re RealEstate) Create(realEstates *[]RealEstate) int {
 
 	query.Str = fmt.Sprintf("%s;", query.Str[:len(query.Str)-1])
 
-	res, err := repo.db.Exec(query.Str)
+	res, err := repo.db.Exec(query.Str, query.Values...)
 	if err != nil {
 		log.Fatal(err)
 	}
