@@ -14,27 +14,11 @@ function loadFromLocalStorage(key) {
     let inp = htmx.find(`#${key}`);
     inp.value = value.toString();
   }
-}
-
-function lazyLoad(url, target, source) {
-  let values = parseTypedKeys(htmx.values(htmx.find(source)));
-  fetch(url, {
-    method: "POST",
-    body: JSON.stringify(values),
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((res) => res.text())
-    .then((res) => {
-      htmx.find(target).innerHTML = res;
-    });
-}
-
-function lazyLoadRealEstate() {
-  lazyLoad("/filterEstate", "#result", "#realEstateFilterForm");
+  return true
 }
 
 function resetRealEstateForm() {
   htmx.find("#realEstateFilterForm").reset();
   localStorage.removeItem("realEstateFilterFormCache");
-  lazyLoadRealEstate();
+  htmx.trigger("#realEstateFilterForm", "submit");
 }

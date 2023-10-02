@@ -9,7 +9,6 @@
       integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
       crossorigin="anonymous"
     ></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
@@ -24,6 +23,7 @@
       hx-target="#result"
       hx-swap="innerHTML"
       hx-ext="typed-json-enc"
+      hx-trigger="load delay:0.5s, submit"
       hx-on::before-request="storeOnLocalStorage('realEstateFilterFormCache', htmx.values(this));"
       x-init="loadFromLocalStorage('realEstateFilterFormCache');"
     >
@@ -94,13 +94,11 @@
       </label>
 
       <button>Confirm</button>
-      <button type="button" x-data @click="resetRealEstateForm();">Reset</button>
+      <button type="button" x-data @click="resetRealEstateForm();">
+        Reset
+      </button>
     </form>
 
-    <div
-      id="result"
-      x-data
-      x-init="$nextTick(lazyLoadRealEstate());"
-    ></div>
+    <div id="result"></div>
   </body>
 </html>
