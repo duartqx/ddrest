@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <title></title>
     <meta charset="UTF-8" />
@@ -15,90 +15,126 @@
     ></script>
     <script src="/static/js/typed-json-enc.js"></script>
     <script src="/static/js/local-storage.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
   </head>
-  <body>
-    <form
-      id="realEstateFilterForm"
-      hx-post="/filterEstate"
-      hx-target="#result"
-      hx-swap="innerHTML"
-      hx-ext="typed-json-enc"
-      hx-trigger="load delay:0.5s, submit"
-      hx-on::before-request="storeOnLocalStorage('realEstateFilterFormCache', htmx.values(this));"
-      x-init="loadFromLocalStorage('realEstateFilterFormCache');"
-    >
-      <label>
-        <span>Estate Name</span>
-        <input
-          id="estate_name"
-          type="text"
-          name="String::estate_name"
-          placeholder="The name of the estate"
-        />
-      </label>
-      <label>
-        <span>Number of Floors</span>
-        <input
-          id="estate_floors"
-          type="number"
-          name="Int::estate_floors"
-          placeholder="0"
-        />
-      </label>
-      <label>
-        <span>Number of Balconies</span>
-        <input
-          id="estate_balconies"
-          type="number"
-          name="Int::estate_balconies"
-          placeholder="0"
-        />
-      </label>
-      <label>
-        <span>Number of Bedrooms</span>
-        <input
-          id="estate_bedrooms"
-          type="number"
-          name="Int::estate_bedrooms"
-          placeholder="1"
-        />
-      </label>
-      <label>
-        <span>Number of Bathrooms</span>
-        <input
-          id="estate_bathrooms"
-          type="number"
-          name="Int::estate_bathrooms"
-          placeholder="1"
-        />
-      </label>
-      <label>
-        <span>Are Pets allowed?</span>
-        <select id="estate_pets_allowed" name="Int::estate_pets_allowed">
-          <option value="2">Selecionar</option>
-          <option value="0">No</option>
-          <option value="1">Yes</option>
-        </select>
-      </label>
-      <label>
-        <span>Number of parking Spots</span>
-        <input id="estate_parking" type="number" name="Int::estate_parking" />
-      </label>
-      <label>
-        <span>Estate Description</span>
-        <input
-          id="estate_description"
-          type="text"
-          name="String::estate_description"
-        />
-      </label>
+  <body class="bg-body-tertiary">
+    <div class="container">
+      <div class="row">
+        <nav class="py-4 text-center"><p class="lead">DDRest</p></nav>
+      </div>
+      <div class="row">
+        <div class="col-md-3 my-4">
+          <form
+            id="realEstateFilterForm"
+            hx-post="/filterEstate"
+            hx-target="#result"
+            hx-swap="innerHTML"
+            hx-ext="typed-json-enc"
+            hx-trigger="load delay:0.5s, submit"
+            hx-on::before-request="storeOnLocalStorage('realEstateFilterFormCache', htmx.values(this));"
+            x-init="loadFromLocalStorage('realEstateFilterFormCache');"
+          >
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Estate Name</span>
+              <input
+                id="estate_name"
+                class="form-control"
+                type="text"
+                name="String::estate_name"
+                placeholder="The name of the estate"
+              />
+            </label>
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Number of Floors</span>
+              <input
+                id="estate_floors"
+                class="form-control"
+                type="number"
+                name="Int::estate_floors"
+                placeholder="0"
+              />
+            </label>
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Number of Balconies</span>
+              <input
+                id="estate_balconies"
+                class="form-control"
+                type="number"
+                name="Int::estate_balconies"
+                placeholder="0"
+              />
+            </label>
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Number of Bedrooms</span>
+              <input
+                id="estate_bedrooms"
+                class="form-control"
+                type="number"
+                name="Int::estate_bedrooms"
+                placeholder="1"
+              />
+            </label>
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Number of Bathrooms</span>
+              <input
+                id="estate_bathrooms"
+                class="form-control"
+                type="number"
+                name="Int::estate_bathrooms"
+                placeholder="1"
+              />
+            </label>
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Are Pets allowed?</span>
+              <select
+                id="estate_pets_allowed"
+                name="Int::estate_pets_allowed"
+                class="form-control"
+              >
+                <option value="2">Selecionar</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </label>
+            <label class="col-md-12 form-label">
+              <span class="text-body-secondary">Number of parking Spots</span>
+              <input
+                id="estate_parking"
+                class="form-control"
+                type="number"
+                name="Int::estate_parking"
+              />
+            </label>
+            <div class="d-flex my-2">
+              <div class="col-md-5">
+                <button class="btn btn-primary" style="width: 100%">
+                  Confirm
+                </button>
+              </div>
+              <div class="col-md-5 ms-auto">
+                <button
+                  type="button"
+                  x-data
+                  @click="resetRealEstateForm();"
+                  class="btn btn-outline-warning"
+                  style="width: 100%"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
 
-      <button>Confirm</button>
-      <button type="button" x-data @click="resetRealEstateForm();">
-        Reset
-      </button>
-    </form>
-
-    <div id="result"></div>
+        <div class="col-md-9">
+          <div id="result"></div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

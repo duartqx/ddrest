@@ -1,47 +1,36 @@
-<style>
-table,
-td {
-  border: 0.5px dashed #333;
-}
-thead > * {
-    background-color: lightgray;
-    color: white;
-    border: none;
-}
-</style>
-<table>
-  <thead>
-    	<tr>
-          <th colspan="10">Estates ({{ len . }})</th>
-    	</tr>
-    	<tr>
-            <td>Name</td>
-          	<td>AddressNumber</td>
-            <td>AtFloor</td>
-            <td>Floors</td>
-          	<td>Balconies</td>
-            <td>Bedrooms</td>
-            <td>Bathrooms</td>
-          	<td>Parking</td>
-          	<td>PetsAllowed</td>
-            <td>Description</td>
-    	</tr>
-  </thead>
-  
-  <tbody>
-  {{ range . }}
-     <tr>
-            <td>{{ .Name }}</td>
-            <td>{{ .AddressNumber }}</td>
-            <td>{{ .AtFloor }}</td>
-            <td>{{ .Floors }}</td>
-          	<td>{{ .Balconies }}</td>
-            <td>{{ .Bedrooms }}</td>
-            <td>{{ .Bathrooms }}</td>
-          	<td>{{ .Parking }}</td>
-            <td>{{ if eq .PetsAllowed 1 }}Yes{{ else }}No{{ end }}</td>
-            <td>{{ .Description }}</td>
-    	</tr>
-  {{ end }}
-  </tbody>
-</table>
+<div>
+  <p class="lead text-end">({{ len . }})</p>
+  <table class="table table-hover text-center">
+    <thead>
+      <tr class="fw-light">
+        <td scope="col">Name</td>
+        <td scope="col">AddressNumber</td>
+        <td scope="col">AtFloor</td>
+        <td scope="col">Floors</td>
+        <td scope="col">Balconies</td>
+        <td scope="col">Bedrooms</td>
+        <td scope="col">Bathrooms</td>
+        <td scope="col">Parking</td>
+        <td scope="col">PetsAllowed</td>
+        <td scope="col">Description</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{ range . }}
+      <tr>
+        <td scope="row">{{ .Name }}</td>
+        <td>{{ .AddressNumber }}</td>
+        <td>{{ .AtFloor }}</td>
+        <td>{{ .Floors }}</td>
+        <td>{{ .Balconies }}</td>
+        <td>{{ .Bedrooms }}</td>
+        <td>{{ .Bathrooms }}</td>
+        <td>{{ .Parking }}</td>
+        <td>{{ if eq .PetsAllowed 1 }}Yes{{ else }}No{{ end }}</td>
+        <td>{{ .Description }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</div>
