@@ -1,5 +1,5 @@
 # DDRest
-![ddrest](https://github.com/duartqx/images/blob/main/ddrest.png?raw=true "ddrest")
+
 ### Go / Htmx
 Another day, another Htmx exercise. Today I tried to build a simple form that filters out rows on a real estate listing webpage. This is the second time I've tried to use json with Htmx, but this time I did something different. Instead of just using the json-enc extension for Htmx, I actually built on top of it, adding a data parser to convert digits to numbers and booleans. This made my life a little easier on the backend, since I didn't have to implement a custom json parser in Go.
 
@@ -20,3 +20,7 @@ All you'll need is go 1.21, cd into the folder and call `go run .`
 ### Conclusion
 
 I've been wanting to try this for a few weeks now, and the result, although simple, made me really happy. I could expand it by paginating the table, but I'll save that for next time.
+
+### Demo
+
+https://github.com/duartqx/ddrest/assets/49421452/4aa0a824-ea0f-44c4-8e2a-ad70877c7429
