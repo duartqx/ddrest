@@ -33,7 +33,7 @@
             id="realEstateFilterForm"
             hx-post="/filterEstate"
             hx-target="#result"
-            hx-swap="innerHTML"
+            hx-swap="innerHTML transition:true"
             hx-ext="typed-json-enc"
             hx-trigger="load delay:0.5s, submit"
             hx-on::before-request="storeOnLocalStorage('realEstateFilterFormCache', htmx.values(this));"
