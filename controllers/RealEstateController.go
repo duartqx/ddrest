@@ -11,11 +11,9 @@ import (
 
 type RealEstateController struct{}
 
-func (re RealEstateController) Dispatch(w http.ResponseWriter, r *http.Request) {
+func (re RealEstateController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-	case "GET":
-		re.Get(w, r)
-	case "POST":
+	case http.MethodPost:
 		re.Post(w, r)
 	default:
 		utils.RaiseMethodNotAllowed(w, r)
@@ -35,8 +33,4 @@ func (re RealEstateController) Post(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	models.RealEstate{}.Create(realEstates)
-}
-
-func (re RealEstateController) Get(w http.ResponseWriter, r *http.Request) {
-	utils.RaiseMethodNotAllowed(w, r)
 }
