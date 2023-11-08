@@ -8,7 +8,15 @@ import (
 	"net/http"
 )
 
-type FilterRealEstateController struct{}
+type FilterRealEstateController struct {
+	estateTableView *template.Template
+}
+
+func GetFilterRealEstateController(estateTableView *template.Template) *FilterRealEstateController {
+	return &FilterRealEstateController{
+		estateTableView: estateTableView,
+	}
+}
 
 func (f FilterRealEstateController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
@@ -29,6 +37,5 @@ func (f FilterRealEstateController) Post(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	tmpl := template.Must(template.ParseFiles("views/estates-table.html"))
-	tmpl.Execute(w, re.Filter())
+	f.estateTableView.Execute(w, re.Filter())
 }

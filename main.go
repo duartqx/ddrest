@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"ddrest/models"
+	"html/template"
 	"log"
 	"net/http"
 
@@ -13,11 +14,13 @@ import (
 
 func GetMux() *http.ServeMux {
 
+	indexView := template.Must(template.ParseFiles("views/index.html"))
+	estateTableView := template.Must(template.ParseFiles("views/estates-table.html"))
+
 	mux := http.NewServeMux()
 
-	mux.Handle("/", controllers.IndexController{})
-	mux.Handle("/filterEstate", controllers.FilterRealEstateController{})
-	mux.Handle("/realEstate", controllers.RealEstateController{})
+	mux.Handle("/", controllers.GetIndexController(indexView))
+	mux.Handle("/filterEstate", controllers.GetFilterRealEstateController(estateTableView))
 
 	mux.Handle(
 		"/static/",

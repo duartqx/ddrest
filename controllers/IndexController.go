@@ -6,7 +6,15 @@ import (
 	"net/http"
 )
 
-type IndexController struct{}
+type IndexController struct {
+	indexView *template.Template
+}
+
+func GetIndexController(indexView *template.Template) *IndexController {
+	return &IndexController{
+		indexView: indexView,
+	}
+}
 
 func (i IndexController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
@@ -18,6 +26,5 @@ func (i IndexController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (i IndexController) Get(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("views/index.html"))
-	tmpl.Execute(w, nil)
+	i.indexView.Execute(w, nil)
 }
